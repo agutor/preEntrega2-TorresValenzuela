@@ -9,6 +9,7 @@ Ecommerce de Remeras Geek/Friki con React y Firebase
 3.  Checkout: Una vez que el usuario ha finalizado su selección, puede proceder al checkout. Aquí, se le pedirá que ingrese sus datos para completar la compra. Una vez finalizado el proceso, recibirá un mensaje de confirmación con su nombre y el ID de la orden generada.
 4.  Gestión de stock: Los talles de las remeras están asociados con el stock disponible de cada ítem individual. Si no hay stock para un talle en particular, el usuario no podrá solicitar esa remera.
 5.  Persistencia del carrito: El carrito del usuario se almacena localmente, lo que significa que incluso si cierra la página y vuelve más tarde, sus selecciones permanecerán intactas hasta que finalice la compra.
+6.  Verificación de email: Los usuarios deberán confirmar su dirección de correo electrónico dos veces
 
 **Componentes reutilizables:**
 
@@ -21,3 +22,9 @@ Hay una serie de componentes reutilizables de los cuales destaco:
 
 - **React Hook Form:** Se implementó esta biblioteca para facilitar el manejo de los datos ingresados por el usuario en el formulario del componente "Checkout", ayudando asi a un manejo eficiente de los datos.
 - **MetroUI:** En esta última entrega, se opté por utilizar la biblioteca de componentes MetroUI en lugar de Bootstrap que venia utilizando con anterioridad, con el fin de probar una nueva interfaz visual para el ecommerce.
+
+
+
+**Videos de muestra**
+
+https://drive.google.com/drive/folders/1RJdWH7n8vYgYHbiHwAx0oFdQBidrYAPA?usp=sharing
