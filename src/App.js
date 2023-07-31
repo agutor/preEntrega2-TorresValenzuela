@@ -1,15 +1,17 @@
 import { NavBar } from "./components/NavBar";
 import "./App.css";
 
-import { CartContext } from "./context/CartContext";
+import { CartToCheckout } from "./components/Cart";
+import { CartProvider } from "./context/CartContext";
 import ItemListContainer from "./components/ItemListContainer";
 import ItemDetailList from "./components/ItemDetailContainer";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Checkout from "./components/Checkout";
 
 export default function App() {
   return (
     <>
-      <CartContext.Provider value={[]}>
+      <CartProvider>
         <BrowserRouter>
           <NavBar />
           <Routes>
@@ -17,11 +19,16 @@ export default function App() {
               path="/"
               element={<ItemListContainer greeting="Que remera usas hoy?" />}
             />
-            <Route path="/category/:id" element={<ItemListContainer />} />
+            <Route
+              path="/category/:categoryId"
+              element={<ItemListContainer />}
+            />
             <Route path="/item/:id" element={<ItemDetailList />} />
+            <Route path="/cart" element={<CartToCheckout />} />
+            <Route path="/checkout" element={<Checkout />} />
           </Routes>
         </BrowserRouter>
-      </CartContext.Provider>
+      </CartProvider>
     </>
   );
 }

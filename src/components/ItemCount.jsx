@@ -1,30 +1,53 @@
-export const Counter = (props) => {
+export const ItemQuantitySelector = (props) => {
   return (
     <>
-      <select value={props.size} onChange={props.sizeOnChange}>
+      <select value={props.stockSize} onChange={props.sizeOnChange}>
         <option value="">Selecciona un talle</option>
-        <option value="s">S</option>
-        <option value="m">M</option>
-        <option value="l">L</option>
-        <option value="xl">XL</option>
-        <option value="xxl">XXL</option>
+        <option value="1">S</option>
+        <option value="2">M</option>
+        <option value="3">L</option>
+        <option value="4">XL</option>
+        <option value="5">XXL</option>
       </select>
+
       {props.quantity <= 1 ? (
-        <>
-          <button disabled onClick={props.substract}>
+        <div style={{ display: "flex" }}>
+          <button
+            style={{ margin: "1rem" }}
+            className="button info rounded shadowed"
+            disabled
+            onClick={props.decrement}
+          >
             -
           </button>
           <h2>{props.quantity}</h2>
-          <button onClick={props.add}>+</button>
-        </>
+          <button
+            style={{ margin: "1rem" }}
+            className="button info rounded shadowed"
+            onClick={props.increment}
+          >
+            +
+          </button>
+        </div>
       ) : (
-        <>
-          <button onClick={props.substract}>-</button>
+        <div style={{ display: "flex" }}>
+          <button
+            style={{ margin: "1rem" }}
+            className="button info rounded shadowed"
+            onClick={props.decrement}
+          >
+            -
+          </button>
           <h2>{props.quantity}</h2>
-          <button onClick={props.add}>+</button>
-        </>
+          <button
+            style={{ margin: "1rem" }}
+            className="button info rounded shadowed"
+            onClick={props.increment}
+          >
+            +
+          </button>
+        </div>
       )}
-      <button>Agregar al Carrito</button>
     </>
   );
 };

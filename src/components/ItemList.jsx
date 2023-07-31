@@ -7,7 +7,7 @@ const ItemList = ({ remeras, titulo }) => {
         {titulo}
       </h2>
 
-      <div className="remeras">
+      <div className="row">
         {remeras.map((remera) => (
           <Item remera={remera} key={remera.id} />
         ))}

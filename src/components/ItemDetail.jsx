@@ -1,50 +1,91 @@
 //detalles del producto
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 
-import { Counter } from "./ItemCount";
+import { ItemQuantitySelector } from "./ItemCount";
+import { CartContext } from "../context/CartContext";
+import { setStockFunction } from "../utilities/setStockFunction";
+import { ItemDetailData } from "./Item";
 
 const ItemDetail = ({ item }) => {
   const [quantity, setQuantity] = useState(1);
-
-  const handleAdd = () => {
-    quantity < item.stock[selectedSize] && setQuantity((prev) => prev + 1);
+  const [addedToCart, setAddedToCart] = useState(false);
+  const continueShopping = () => {
+    setAddedToCart(true);
   };
-  const handleSubstract = () => {
+
+  const { addItem } = useContext(CartContext);
+  const handleIncrement = () => {
+    quantity < item.stock[stockSize] && setQuantity((prev) => prev + 1);
+  };
+  const handleDecrement = () => {
     quantity > 1 && setQuantity((prev) => prev - 1);
   };
   const [selectedSize, setSelectedSize] = useState("");
+  const [stockSize, setStockSize] = useState();
+
   const handleSizeChange = (event) => {
-    setSelectedSize(event.target.value);
+    setStockFunction(event, setStockSize, setSelectedSize);
     setQuantity(1);
   };
 
-  return (
-    <div className="container">
-      <div className="remera-detalle">
-        <img src={item.imagen} alt={item.titulo} />
-        <div>
-          <h3 className="titulo">{item.titulo}</h3>
-          <p className="descripcion">{item.descripcion}</p>
-          <p className="category" style={{ textTransform: "capitalize" }}>
-            Categoría: {item.category}
-          </p>
-          <p className="precio">${item.precio}</p>
-          <Counter
-            quantity={quantity}
-            add={handleAdd}
-            substract={handleSubstract}
-            size={selectedSize}
-            sizeOnChange={handleSizeChange}
-          />
-          {selectedSize ? (
-            <h5>Stock disponible: {item.stock[selectedSize]}</h5>
-          ) : (
-            <h5>Stock disponible: Elije Talle</h5>
-          )}
+  useEffect(() => {
+    setAddedToCart(false);
+  }, [item]);
+
+  if (!addedToCart) {
+    return (
+      <>
+        <div className="container">
+          <div className="card rounded cell-md">
+            <ItemDetailData remera={item} />
+            <p className="descripcion">{item.description}</p>
+            <ItemQuantitySelector
+              quantity={quantity}
+              increment={handleIncrement}
+              decrement={handleDecrement}
+              stockSize={stockSize}
+              sizeOnChange={handleSizeChange}
+            />
+            {stockSize ? (
+              <>
+                <h5>Stock disponible: {item.stock[stockSize]}</h5>
+                <button
+                  onClick={() => {
+                    addItem(item, quantity, selectedSize);
+                    continueShopping();
+                  }}
+                >
+                  Agregar al Carrito
+                </button>
+              </>
+            ) : (
+              <>
+                <h5>Stock disponible: Elije Talle</h5>
+                <button disabled>Agregar al Carrito</button>
+              </>
+            )}
+          </div>
         </div>
-      </div>
-    </div>
-  );
+      </>
+    );
+  } else {
+    return (
+      <>
+        <div className="container">
+          <div className="card rounded cell-md">
+            <ItemDetailData remera={item} />
+            <Link to={"/"}>
+              <button>Seguir Comprando</button>
+            </Link>
+            <Link to={"/Cart"}>
+              <button>Ir a Carrito</button>
+            </Link>
+          </div>
+        </div>
+      </>
+    );
+  }
 };
 
 export default ItemDetail;

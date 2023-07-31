@@ -1,31 +1,46 @@
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { CartWidget } from "./CartWidget";
 import { NavLink } from "react-router-dom";
-import data from "../data/data.json";
+import { useState, useEffect } from "react";
 
-const categorias = data.map((remeras) => remeras.category);
-const unique = new Set(categorias);
+export const NavBar = () => {
+  const [categories, setCategories] = useState([]);
 
-export const NavBar = () => (
-  <Navbar bg="danger" variant="dark">
-    <Container>
-      <Navbar.Brand as={NavLink} to="/">
-        3 Torres Design
-      </Navbar.Brand>
-      <Nav className="me-auto">
-        {[...unique].map((categoria) => (
-          <NavLink
-            to={`/category/${categoria}`}
-            className="nav-link"
-            style={{ textTransform: "capitalize" }}
-          >
-            {categoria}
-          </NavLink>
+  useEffect(() => {
+    const db = getFirestore();
+    const refCollection = collection(db, "remeras");
+    getDocs(refCollection).then((snapshot) => {
+      const category = snapshot.docs.map((doc) => doc.data().categoryId);
+      const unique = new Set(category);
+      setCategories(Array.from(unique));
+    });
+  }, []);
+
+  return (
+    <nav
+      data-role="appbar"
+      data-expand-point="md"
+      style={{ position: "inherit" }}
+    >
+      <ul className="app-bar-menu">
+        <NavLink to="/" className="brand no-hover">
+          <h3>3 Torres Design</h3>
+        </NavLink>
+        {[...categories].map((categoria) => (
+          <li key={categoria}>
+            <NavLink
+              to={`/category/${categoria}`}
+              className="nav-link"
+              style={{ textTransform: "capitalize" }}
+            >
+              {categoria}
+            </NavLink>
+          </li>
         ))}
-      </Nav>
-      <CartWidget />
-    </Container>
-  </Navbar>
-);
+        <li>
+          <CartWidget />
+        </li>
+      </ul>
+    </nav>
+  );
+};
